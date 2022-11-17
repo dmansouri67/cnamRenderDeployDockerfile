@@ -17,6 +17,12 @@ $app->get('/api/hello/{name}', function (Request $request, Response $response, $
     $response->getBody()->write(json_encode ($array));
     return $response;
 });
+$app->get('/api/user', function (Request $request, Response $response, $args) {   
+    $data = array('nom' => 'toto', 'prenom' => 'titi','adresse' => '6 rue des fleurs', 'tel' => '0606060607');
+    $response->getBody()->write(json_encode($data));
+
+    return $response;
+});
 
 function createJwT (Response $response) : Response {
 
