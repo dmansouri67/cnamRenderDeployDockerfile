@@ -34,7 +34,29 @@ function createJwT (Response $response) : Response {
     $response = $response->withHeader("Authorization", "Bearer {$token_jwt}");
     return $response;
 }
+// APi d'authentification générant un JWT
+$app->post('/api/login', function (Request $request, Response $response, $args) {   
+    $err=false;
+    $body = $request->getParsedBody();
+    $login = $body ['login'] ?? "";
+    $pass = $body ['pass'] ?? "";
 
+    if (!preg_match("/[a-zA-Z0-9]{1,20}/",$login))   {
+        $err = true;
+    }
+    if (!preg_match("/[a-zA-Z0-9]{1,20}/",$pass))  {
+        $err=true;
+    }
+
+    if (!$err) {
+            $response = createJwT ($response);
+            $data = array('nom' => 'toto', 'prenom' => 'titi');
+            $response->getBody()->write(json_encode($data));
+     } else {          
+            $response = $response->withStatus(401);
+     }
+    return $response;
+});
 
 
 $options = [
